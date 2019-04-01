@@ -1,0 +1,7 @@
+trigrams = LOAD 's3://cse6242-2019spring-trigrams-big/*' AS (trigram:chararray, year:int, occurrences:int, books:int);
+filtertrigrams = FILTER trigrams BY (occurrences >= 400 AND books >= 15);
+filtereddata = GROUP filtertrigrams BY trigram;
+gen = FOREACH filtereddata GENERATE FLATTEN(group),(double)SUM(filtertrigrams.occurrences)/SUM(filtertrigrams.books);
+gen2 = ORDER gen BY $1 DESC, $0 ASC;
+finaloutput = LIMIT gen2 20;
+STORE finaloutput INTO 's3://cse6242manish-output2-big/*' USING PigStorage('\t');
