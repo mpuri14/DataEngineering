@@ -43,7 +43,7 @@ public class Q1 {
   			
   			String key1 = key.toString();
   			Text key_text = new Text(key1);
-  			//reduce result
+  			//reduce job result
   			cont.write(key_text, reduceResult);
   			
   				}
